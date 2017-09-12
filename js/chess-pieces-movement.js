@@ -238,20 +238,139 @@ $(".blk-bishop").mousedown(function () {
 function bishopMovement(piece,color){
     var id = $(piece).parent().attr("id");
     currentPiece = $('#'+id).children();
-    var nextId=Number(id)+7;
-    var empty;
-    while (!(nextId>64 || nextId<0)){
-        empty=isEmpty(nextId);
-        if(empty){
-            setMovableTo(nextId);
-            nextId=nextId+7;
-        }else{
-            checkEnemy(nextId);
+    var nextId,empty,end=false,cornerPiece=false;
+    for (var x=0;x<8;x++){
+        if (id==firstColoumn[x]){
+            cornerPiece=true;
             break;
         }
+    }
+    if (!cornerPiece) {
+        bishopMovement2(7,id,color);
+        // nextId = Number(id) + 7;
+        // end = false;
+        // while (!(nextId > 64 || nextId < 0)) {
+        //     empty = isEmpty(nextId);
+        //     if (empty) {
+        //         setMovableTo(nextId);
+        //         nextId = nextId + 7;
+        //     } else {
+        //         checkEnemy(nextId, color);
+        //         break;
+        //     }
+        //     if (end) {
+        //         break;
+        //     }
+        //     for (var x = 0; x < 8; x++) {
+        //         if ((nextId == firstColoumn[x]) || (nextId == lastColoumn[x])) {
+        //             end = true;
+        //             break;
+        //         }
+        //     }
+        // }
 
-        if (nextId%9==0 || nextId%8==0 || nextId==1){
+        bishopMovement2(-9,id,color);
+        // nextId = Number(id) - 9;
+        // end = false;
+        // while (!(nextId > 64 || nextId < 0)) {
+        //     empty = isEmpty(nextId);
+        //     if (empty) {
+        //         setMovableTo(nextId);
+        //         nextId = nextId - 9;
+        //     } else {
+        //         checkEnemy(nextId, color);
+        //         break;
+        //     }
+        //     if (end) {
+        //         break;
+        //     }
+        //     for (var x = 0; x < 8; x++) {
+        //         if ((nextId == firstColoumn[x]) || (nextId == lastColoumn[x])) {
+        //             end = true;
+        //             break;
+        //         }
+        //     }
+        // }
+    }
+
+    cornerPiece=false;
+
+    for (var x=0;x<8;x++){
+        if (id==lastColoumn[x]){
+            cornerPiece=true;
             break;
+        }
+    }
+
+    if (!cornerPiece) {
+
+        bishopMovement2(9,id,color);
+        // nextId = Number(id) + 9;
+        // end = false;
+        // while (!(nextId > 64 || nextId < 0)) {
+        //     empty = isEmpty(nextId);
+        //     if (empty) {
+        //         setMovableTo(nextId);
+        //         nextId = nextId + 9;
+        //     } else {
+        //         checkEnemy(nextId, color);
+        //         break;
+        //     }
+        //     if (end) {
+        //         break;
+        //     }
+        //     for (var x = 0; x < 8; x++) {
+        //         if ((nextId == firstColoumn[x]) || (nextId == lastColoumn[x])) {
+        //             end = true;
+        //             break;
+        //         }
+        //     }
+        // }
+
+        bishopMovement2(-7,id,color);
+        // nextId = Number(id) - 7;
+        // end = false;
+        // while (!(nextId > 64 || nextId < 0)) {
+        //     empty = isEmpty(nextId);
+        //     if (empty) {
+        //         setMovableTo(nextId);
+        //         nextId = nextId - 7;
+        //     } else {
+        //         checkEnemy(nextId, color);
+        //         break;
+        //     }
+        //     if (end) {
+        //         break;
+        //     }
+        //     for (var x = 0; x < 8; x++) {
+        //         if ((nextId == firstColoumn[x]) || (nextId == lastColoumn[x])) {
+        //             end = true;
+        //         }
+        //     }
+        // }
+    }
+}
+
+function bishopMovement2(pattern,id,color){
+    var nextId = Number(id) + pattern;
+    var end = false;
+    while (!(nextId > 64 || nextId < 0)) {
+        var empty = isEmpty(nextId);
+        if (empty) {
+            setMovableTo(nextId);
+            nextId = nextId + pattern;
+        } else {
+            checkEnemy(nextId, color);
+            break;
+        }
+        if (end) {
+            break;
+        }
+        for (var x = 0; x < 8; x++) {
+            if ((nextId == firstColoumn[x]) || (nextId == lastColoumn[x])) {
+                end = true;
+                break;
+            }
         }
     }
 }
@@ -266,7 +385,7 @@ function bishopMovement(piece,color){
 
 
 function setMovableTo(nextId){
-    console.log(nextId);
+    // console.log(nextId);console.log('#' + nextId);
     if ($('#' + nextId).attr("class").includes("blk")) {
         $('#' + nextId).addClass("movable-block-blk")
             .droppable("option", "scope", "accept");

@@ -5,7 +5,16 @@
     <title>Chessboard</title>
 
     <style>
+        body{
+            text-align: center;
+        }
+
+        #board{
+            position: absolute;
+        }
+
         #board, .row .wht, .blk{
+            /*position: absolute;*/
             display: block;
             padding: 0px;
             margin: 0px;
@@ -66,6 +75,10 @@
 
 </head>
 <body>
+    <div id="white-capture-pices" style="width: 100px; height: 200px; position: absolute; background-color: #2aabd2">
+
+    </div>
+
     <div id="board">
         <div class="row" id="row-8">
             <div class="wht" id="57"><img class="blk-rook" src="icons/Rook_Black.png"></div>
@@ -128,7 +141,7 @@
             <div class="wht" id="24"></div>
         </div>
         <div class="row" id="row-2">
-            <div class="wht" id="09"><img class="wht-pawn" src="icons/Pawn.png"></div>
+            <div class="wht" id="9"><img class="wht-pawn" src="icons/Pawn.png"></div>
             <div class="blk" id="10"><img class="wht-pawn" src="icons/Pawn.png"></div>
             <div class="wht" id="11"><img class="wht-pawn" src="icons/Pawn.png"></div>
             <div class="blk" id="12"><img class="wht-pawn" src="icons/Pawn.png"></div>
@@ -138,19 +151,28 @@
             <div class="blk" id="16"><img class="wht-pawn" src="icons/Pawn.png"></div>
         </div>
         <div class="row" id="row-1">
-            <div class="blk" id="01"><img class="wht-rook" src="icons/Rook.png"></div>
-            <div class="wht" id="02"><img class="wht-knight" src="icons/Knight.png"></div>
-            <div class="blk" id="03"><img class="wht-bishop" src="icons/Bishop.png"></div>
-            <div class="wht" id="04"><img class="wht-king" src="icons/King.png"></div>
-            <div class="blk" id="05"><img class="wht-queen" src="icons/Queen.png"></div>
-            <div class="wht" id="06"><img class="wht-bishop" src="icons/Bishop.png"></div>
-            <div class="blk" id="07"><img class="wht-knight" src="icons/Knight.png"></div>
-            <div class="wht" id="08"><img class="wht-rook" src="icons/Rook.png"></div>
+            <div class="blk" id="1"><img class="wht-rook" src="icons/Rook.png"></div>
+            <div class="wht" id="2"><img class="wht-knight" src="icons/Knight.png"></div>
+            <div class="blk" id="3"><img class="wht-bishop" src="icons/Bishop.png"></div>
+            <div class="wht" id="4"><img class="wht-king" src="icons/King.png"></div>
+            <div class="blk" id="5"><img class="wht-queen" src="icons/Queen.png"></div>
+            <div class="wht" id="6"><img class="wht-bishop" src="icons/Bishop.png"></div>
+            <div class="blk" id="7"><img class="wht-knight" src="icons/Knight.png"></div>
+            <div class="wht" id="8"><img class="wht-rook" src="icons/Rook.png"></div>
         </div>
+    </div>
+
+    <div id="black-capture-pices" style="width: 100px; height: 200px; position: absolute; background-color: #0f0f0f; right: 0px;">
+
     </div>
 
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/jquery-ui.js"></script>
     <script src="js/chess-pieces-movement.js"></script>
+    <script>
+        var width = screen.width/2;
+        var left = width - 368;
+        $("#board").css('left',left+'px');
+    </script>
 </body>
 </html>
