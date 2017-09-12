@@ -223,6 +223,9 @@ function knightMovement(piece,color){
     }
 }
 
+var firstColoumn=[1,9,17,25,33,41,49,57];
+var lastColoumn=[8,16,24,32,40,48,56,64];
+
 //handels the movement of the bishops
 $(".wht-bishop").mousedown(function () {
     bishopMovement(this,"wht");
@@ -246,12 +249,13 @@ function bishopMovement(piece,color){
             checkEnemy(nextId);
             break;
         }
-        
+
         if (nextId%9==0 || nextId%8==0 || nextId==1){
             break;
         }
     }
 }
+
 
 
 
