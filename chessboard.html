@@ -7,6 +7,7 @@
     <style>
         body{
             text-align: center;
+            background: url("images/background.jpg");
         }
 
         #board{
@@ -70,12 +71,27 @@
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9c667', endColorstr='#f79621',GradientType=1 );
         }
 
+        #white-capture-pices, #black-capture-pices{
+            /*width: 100px;*/
+            /*height: 100px;*/
+            float: left;
+            background: -moz-radial-gradient(center, ellipse cover, rgba(63,76,107,0.6) 0%, rgba(63,76,107,0.6) 100%);
+            background: -webkit-radial-gradient(center, ellipse cover, rgba(63,76,107,0.6) 0%,rgba(63,76,107,0.6) 100%);
+            background: radial-gradient(ellipse at center, rgba(63,76,107,0.6) 0%,rgba(63,76,107,0.6) 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#663f4c6b', endColorstr='#663f4c6b',GradientType=1 );
+        }
+
+        #white-capture-pices img, #black-capture-pices img{
+            width: 45px;
+            height: 45px;
+        }
+
 
     </style>
 
 </head>
 <body>
-    <div id="white-capture-pices" style="width: 100px; height: 200px; position: absolute; background-color: #2aabd2">
+    <div id="white-capture-pices" style="width: 100px; height: 200px; position: absolute;">
 
     </div>
 
@@ -162,7 +178,7 @@
         </div>
     </div>
 
-    <div id="black-capture-pices" style="width: 100px; height: 200px; position: absolute; background-color: #0f0f0f; right: 0px;">
+    <div id="black-capture-pices" style="width: 100px; height: 200px; position: absolute; right: 0px;">
 
     </div>
 

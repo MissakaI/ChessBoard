@@ -45,6 +45,13 @@ function onDrop(block, piece, capture){
     if (capture) {
         var existingPiece=$(block).children();
         existingPiece.detach();
+        existingPiece.css("top",0);
+        existingPiece.css("left",0);
+        if (existingPiece.attr("class").includes("blk")){
+            $("#black-capture-pices").append(existingPiece);
+        }else{
+            $("#white-capture-pices").append(existingPiece);
+        }
     }
     $(piece.draggable).detach();
     // var cp=$(piece.draggable[0]).clone();
@@ -239,62 +246,19 @@ function bishopMovement(piece,color){
     var id = $(piece).parent().attr("id");
     currentPiece = $('#'+id).children();
     var nextId,empty,end=false,cornerPiece=false;
-    for (var x=0;x<8;x++){
-        if (id==firstColoumn[x]){
-            cornerPiece=true;
+
+    for (var x=0;x<8;x++) {
+        if (id == firstColoumn[x]) {
+            cornerPiece = true;
             break;
         }
     }
     if (!cornerPiece) {
-        bishopMovement2(7,id,color);
-        // nextId = Number(id) + 7;
-        // end = false;
-        // while (!(nextId > 64 || nextId < 0)) {
-        //     empty = isEmpty(nextId);
-        //     if (empty) {
-        //         setMovableTo(nextId);
-        //         nextId = nextId + 7;
-        //     } else {
-        //         checkEnemy(nextId, color);
-        //         break;
-        //     }
-        //     if (end) {
-        //         break;
-        //     }
-        //     for (var x = 0; x < 8; x++) {
-        //         if ((nextId == firstColoumn[x]) || (nextId == lastColoumn[x])) {
-        //             end = true;
-        //             break;
-        //         }
-        //     }
-        // }
-
-        bishopMovement2(-9,id,color);
-        // nextId = Number(id) - 9;
-        // end = false;
-        // while (!(nextId > 64 || nextId < 0)) {
-        //     empty = isEmpty(nextId);
-        //     if (empty) {
-        //         setMovableTo(nextId);
-        //         nextId = nextId - 9;
-        //     } else {
-        //         checkEnemy(nextId, color);
-        //         break;
-        //     }
-        //     if (end) {
-        //         break;
-        //     }
-        //     for (var x = 0; x < 8; x++) {
-        //         if ((nextId == firstColoumn[x]) || (nextId == lastColoumn[x])) {
-        //             end = true;
-        //             break;
-        //         }
-        //     }
-        // }
+        patternMovement(7,id,color);
+        patternMovement(-9,id,color);
     }
 
     cornerPiece=false;
-
     for (var x=0;x<8;x++){
         if (id==lastColoumn[x]){
             cornerPiece=true;
@@ -303,55 +267,73 @@ function bishopMovement(piece,color){
     }
 
     if (!cornerPiece) {
-
-        bishopMovement2(9,id,color);
-        // nextId = Number(id) + 9;
-        // end = false;
-        // while (!(nextId > 64 || nextId < 0)) {
-        //     empty = isEmpty(nextId);
-        //     if (empty) {
-        //         setMovableTo(nextId);
-        //         nextId = nextId + 9;
-        //     } else {
-        //         checkEnemy(nextId, color);
-        //         break;
-        //     }
-        //     if (end) {
-        //         break;
-        //     }
-        //     for (var x = 0; x < 8; x++) {
-        //         if ((nextId == firstColoumn[x]) || (nextId == lastColoumn[x])) {
-        //             end = true;
-        //             break;
-        //         }
-        //     }
-        // }
-
-        bishopMovement2(-7,id,color);
-        // nextId = Number(id) - 7;
-        // end = false;
-        // while (!(nextId > 64 || nextId < 0)) {
-        //     empty = isEmpty(nextId);
-        //     if (empty) {
-        //         setMovableTo(nextId);
-        //         nextId = nextId - 7;
-        //     } else {
-        //         checkEnemy(nextId, color);
-        //         break;
-        //     }
-        //     if (end) {
-        //         break;
-        //     }
-        //     for (var x = 0; x < 8; x++) {
-        //         if ((nextId == firstColoumn[x]) || (nextId == lastColoumn[x])) {
-        //             end = true;
-        //         }
-        //     }
-        // }
+        patternMovement(9,id,color);
+        patternMovement(-7,id,color);
     }
 }
 
-function bishopMovement2(pattern,id,color){
+//handels the movement of the bishops
+$(".wht-rook").mousedown(function () {
+    rookMovement(this,"wht");
+});
+
+$(".blk-rook").mousedown(function () {
+    rookMovement(this,"blk");
+});
+
+function rookMovement(piece,color){
+    var id = $(piece).parent().attr("id");
+    currentPiece = $('#'+id).children();
+    var nextId,empty,end=false,cornerPiece=false;
+
+    for (var x=0;x<8;x++) {
+        if (id == firstColoumn[x]) {
+            cornerPiece = true;
+            break;
+        }
+    }
+    if (!cornerPiece) {
+        patternMovement(-1,id,color);
+    }
+
+    cornerPiece=false;
+    for (var x=0;x<8;x++){
+        if (id==lastColoumn[x]){
+            cornerPiece=true;
+            break;
+        }
+    }
+
+    if (!cornerPiece) {
+        patternMovement(1,id,color);
+    }
+
+    cornerPiece=false;
+    for (var x=0;x<8;x++){
+        if (id==wht_pawn_init[x]-8){
+            cornerPiece=true;
+            break;
+        }
+    }
+
+    if (!cornerPiece) {
+        patternMovementVertical(-8,id,color);
+    }
+
+    cornerPiece=false;
+    for (var x=0;x<8;x++){
+        if (id==blk_pawn_init[x]+8){
+            cornerPiece=true;
+            break;
+        }
+    }
+
+    if (!cornerPiece) {
+        patternMovementVertical(8,id,color);
+    }
+}
+
+function patternMovement(pattern,id,color){
     var nextId = Number(id) + pattern;
     var end = false;
     while (!(nextId > 64 || nextId < 0)) {
@@ -375,17 +357,48 @@ function bishopMovement2(pattern,id,color){
     }
 }
 
+function patternMovementVertical(pattern,id,color){
+    var nextId = Number(id) + pattern;
+    var end = false;
+    while (!(nextId > 64 || nextId < 0)) {
+        var empty = isEmpty(nextId);
+        if (empty) {
+            setMovableTo(nextId);
+            nextId = nextId + pattern;
+        } else {
+            checkEnemy(nextId, color);
+            break;
+        }
+        if (end) {
+            break;
+        }
+        for (var x = 0; x < 8; x++) {
+            if ((nextId == wht_pawn_init[x]-8) || (nextId == blk_pawn_init[x]+8)) {
+                end = true;
+                break;
+            }
+        }
+    }
+}
 
+//handels the movement of the queen
+$(".wht-queen").mousedown(function () {
+    queenMovement(this,"wht");
+});
 
+$(".blk-queen").mousedown(function () {
+    queenMovement(this,"blk");
+});
 
-
-
-
-
+function queenMovement(piece,color){
+    rookMovement(piece,color);
+    bishopMovement(piece,color);
+}
 
 
 function setMovableTo(nextId){
-    // console.log(nextId);console.log('#' + nextId);
+    // console.log(nextId);
+    console.log('#' + nextId);
     if ($('#' + nextId).attr("class").includes("blk")) {
         $('#' + nextId).addClass("movable-block-blk")
             .droppable("option", "scope", "accept");
