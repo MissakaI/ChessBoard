@@ -17,8 +17,7 @@ $(".wht, .blk").droppable({
 
 $(document).ready(function () {
     //initial state of the board
-    // $(".wht-king, .wht-queen, .wht-bishop, .wht-rook, .blk-king, .blk-queen, .blk-bishop, .blk-rook").draggable("option","disabled",true);
-
+    $(".blk-king, .blk-queen, .blk-bishop, .blk-rook, .blk-pawn").draggable("option","disabled",true);
 });
 
 //used to store the ids of the divs the selected piece can move;
@@ -60,6 +59,14 @@ function onDrop(block, piece, capture){
     currentPiece.css("top",0);
     currentPiece.css("left",0);
     $("#"+id).append(currentPiece);
+
+    if($(".blk-king, .blk-queen, .blk-bishop, .blk-rook, .blk-pawn").draggable("option","disabled")){
+        $(".blk-king, .blk-queen, .blk-bishop, .blk-rook, .blk-pawn").draggable("option","disabled",false);
+        $(".wht-king, .wht-queen, .wht-bishop, .wht-rook, .wht-pawn").draggable("option","disabled",true);
+    }else{
+        $(".blk-king, .blk-queen, .blk-bishop, .blk-rook, .blk-pawn").draggable("option","disabled",true);
+        $(".wht-king, .wht-queen, .wht-bishop, .wht-rook, .wht-pawn").draggable("option","disabled",false);
+    }
 }
 
 function resetBlocks() {
@@ -130,13 +137,7 @@ function pawnMovement(piece,color){
                     if (color == "blk") {
                         temp = (Number(id) - 16).toString();
                     }
-                    if ($('#' + temp).attr("class").includes("blk")) {
-                        $('#' + temp).addClass("movable-block-blk")
-                            .droppable("option", "scope", "accept");
-                    } else if ($('#' + temp).attr("class").includes("wht")) {
-                        $('#' + temp).addClass("movable-block-wht")
-                            .droppable("option", "scope", "accept");
-                    }
+                    setMovableTo(temp);
 
                     moveable_blocks.push(temp);
                     break;
@@ -150,17 +151,10 @@ function pawnMovement(piece,color){
             id=(Number(id)+8).toString();
         }
 
-        if ($('#' + id).attr("class").includes("blk")) {
-            $('#' + id).addClass("movable-block-blk")
-                .droppable("option", "scope", "accept");
-        } else if ($('#' + id).attr("class").includes("wht")) {
-            $('#' + id).addClass("movable-block-wht")
-                .droppable("option", "scope", "accept");
-        }
+        setMovableTo(id)
         moveable_blocks.push(id);
     }
 }
-
 
 function captureMovementPawn(id,color){
     var checkId=Number(id)+7;
@@ -182,8 +176,6 @@ function captureMovementPawn(id,color){
 
 }
 
-
-//ijfasohfapsoiufuhaofiuhhas;sofiuiha;fou
 function checkEnemy(id,color){
     if (!($('#' + id).children().attr("class").includes(color))){
         $('#'+id).addClass("capture-block")
@@ -195,21 +187,32 @@ function checkEnemy(id,color){
 
 //handels the movement of the knights
 $(".wht-knight").mousedown(function () {
-    knightMovement(this,"wht");
+    patternMovement2(this,"wht",knight_move_pattern);
 });
 
 $(".blk-knight").mousedown(function () {
-    knightMovement(this,"blk");
+    patternMovement2(this,"blk",knight_move_pattern);
 });
 
-var knight_move_pattern=[10,17,15,6]
+//handels the movement of the kings
+$(".wht-king").mousedown(function () {
+    patternMovement2(this,"wht",king_move_pattern);
+});
 
-function knightMovement(piece,color){
+$(".blk-king").mousedown(function () {
+    patternMovement2(this,"blk",king_move_pattern);
+});
+
+
+var knight_move_pattern=[10,17,15,6];
+var king_move_pattern=[1,7,8,9];
+
+function patternMovement2(piece,color,pattern){
     var id = $(piece).parent().attr("id");
     currentPiece = $('#'+id).children();
     var empty;
-    for (var x=0;x<knight_move_pattern.length;x++){
-        var nextId=Number(id)+knight_move_pattern[x];
+    for (var x=0;x<pattern.length;x++){
+        var nextId=Number(id)+pattern[x];
         if (!(nextId>64 || nextId<0)) {
             empty = isEmpty(nextId);
             if (empty) {
@@ -218,7 +221,7 @@ function knightMovement(piece,color){
                 checkEnemy(nextId,color);
             }
         }
-        nextId=Number(id)-knight_move_pattern[x];
+        nextId=Number(id)-pattern[x];
         if (!(nextId>64 || nextId<0)) {
             empty = isEmpty(nextId);
             if (empty) {
@@ -394,7 +397,6 @@ function queenMovement(piece,color){
     rookMovement(piece,color);
     bishopMovement(piece,color);
 }
-
 
 function setMovableTo(nextId){
     // console.log(nextId);
