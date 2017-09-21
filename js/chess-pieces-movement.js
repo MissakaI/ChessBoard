@@ -92,7 +92,6 @@ function resetBlocks() {
 //checks whether the destination block is vacant
 function isEmpty(id){
     var check=$("#"+id).children();
-    // console.log(check.length);
     return !(check.length>0);
 }
 
@@ -233,9 +232,6 @@ function patternMovement2(piece,color,pattern){
     }
 }
 
-var firstColoumn=[1,9,17,25,33,41,49,57];
-var lastColoumn=[8,16,24,32,40,48,56,64];
-
 //handels the movement of the bishops
 $(".wht-bishop").mousedown(function () {
     bishopMovement(this,"wht");
@@ -248,28 +244,13 @@ $(".blk-bishop").mousedown(function () {
 function bishopMovement(piece,color){
     var id = $(piece).parent().attr("id");
     currentPiece = $('#'+id).children();
-    var nextId,empty,end=false,cornerPiece=false;
 
-    for (var x=0;x<8;x++) {
-        if (id == firstColoumn[x]) {
-            cornerPiece = true;
-            break;
-        }
-    }
-    if (!cornerPiece) {
+    if ((Number(id)-1)%8 !== 0) {
         patternMovement(7,id,color);
         patternMovement(-9,id,color);
     }
 
-    cornerPiece=false;
-    for (var x=0;x<8;x++){
-        if (id==lastColoumn[x]){
-            cornerPiece=true;
-            break;
-        }
-    }
-
-    if (!cornerPiece) {
+    if (Number(id)%8 !== 0) {
         patternMovement(9,id,color);
         patternMovement(-7,id,color);
     }
@@ -289,49 +270,16 @@ function rookMovement(piece,color){
     currentPiece = $('#'+id).children();
     var nextId,empty,end=false,cornerPiece=false;
 
-    for (var x=0;x<8;x++) {
-        if (id == firstColoumn[x]) {
-            cornerPiece = true;
-            break;
-        }
-    }
-    if (!cornerPiece) {
+    if ((Number(id)-1)%8 !== 0) {
         patternMovement(-1,id,color);
     }
-
-    cornerPiece=false;
-    for (var x=0;x<8;x++){
-        if (id==lastColoumn[x]){
-            cornerPiece=true;
-            break;
-        }
-    }
-
-    if (!cornerPiece) {
+    if (Number(id)%8 !== 0) {
         patternMovement(1,id,color);
     }
-
-    cornerPiece=false;
-    for (var x=0;x<8;x++){
-        if (id==wht_pawn_init[x]-8){
-            cornerPiece=true;
-            break;
-        }
-    }
-
-    if (!cornerPiece) {
+    if (Number(id)>8) {
         patternMovementVertical(-8,id,color);
     }
-
-    cornerPiece=false;
-    for (var x=0;x<8;x++){
-        if (id==blk_pawn_init[x]+8){
-            cornerPiece=true;
-            break;
-        }
-    }
-
-    if (!cornerPiece) {
+    if (Number(id)<57) {
         patternMovementVertical(8,id,color);
     }
 }
@@ -351,11 +299,8 @@ function patternMovement(pattern,id,color){
         if (end) {
             break;
         }
-        for (var x = 0; x < 8; x++) {
-            if ((nextId == firstColoumn[x]) || (nextId == lastColoumn[x])) {
-                end = true;
-                break;
-            }
+        if (((nextId-1)%8 === 0) || (nextId%8 === 0)) {
+            end = true;
         }
     }
 }
@@ -399,7 +344,6 @@ function queenMovement(piece,color){
 }
 
 function setMovableTo(nextId){
-    // console.log(nextId);
     console.log('#' + nextId);
     if ($('#' + nextId).attr("class").includes("blk")) {
         $('#' + nextId).addClass("movable-block-blk")
