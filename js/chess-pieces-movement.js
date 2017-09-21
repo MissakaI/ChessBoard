@@ -18,6 +18,7 @@ $(".wht, .blk").droppable({
 $(document).ready(function () {
     //initial state of the board
     $(".blk-king, .blk-queen, .blk-bishop, .blk-rook, .blk-pawn").draggable("option","disabled",true);
+    tmr=setInterval(countdown,1000);
 });
 
 //used to store the ids of the divs the selected piece can move;
@@ -30,6 +31,41 @@ var currentPiece;
 $("#board").mouseup(function (event) {
     setTimeout(resetBlocks,200);
 });
+
+var tmrID="#timer-white";
+var tmr;
+function countdown(){
+    var currentTime=$(tmrID).text();
+    currentTime=currentTime.split(":");
+    currentTime[0]=Number(currentTime[0]);
+    if(Number(currentTime[1])===0){
+        console.log("A");
+        currentTime[0]=Number(currentTime[0])-1;
+        currentTime[1]=60
+        console.log(currentTime[0]);
+        if (currentTime[0]===(-1)){
+            console.log("B");
+            $(".wht-king, .wht-queen, .wht-bishop, .wht-rook, .wht-pawn").draggable("option","disabled",true);
+            $(".blk-king, .blk-queen, .blk-bishop, .blk-rook, .blk-pawn").draggable("option","disabled",true);
+            clearInterval(tmr);
+            if (tmrID==="#timer-white") {
+                alert("Player white forfeit");
+                alert("Winner Player Black");
+            }else{
+                alert("Player black forfeit");
+                alert("Winner Player White");
+            }
+            return;
+        }
+    }
+    var sec=(Number(currentTime[1])-1);
+    if (sec<10) sec="0"+sec;
+
+    if(Number(currentTime[1])>=0){
+        $(tmrID).text((currentTime[0]<10?("0"+currentTime[0]):currentTime[0])+":"+sec);
+    }
+}
+
 
 function drop1(event,ui){
     onDrop(this,ui,false);
@@ -53,7 +89,6 @@ function onDrop(block, piece, capture){
         }
     }
     $(piece.draggable).detach();
-    // var cp=$(piece.draggable[0]).clone();
     var id = $(block).attr("id");
     console.log(id);
     currentPiece.css("top",0);
@@ -63,9 +98,15 @@ function onDrop(block, piece, capture){
     if($(".blk-king, .blk-queen, .blk-bishop, .blk-rook, .blk-pawn").draggable("option","disabled")){
         $(".blk-king, .blk-queen, .blk-bishop, .blk-rook, .blk-pawn").draggable("option","disabled",false);
         $(".wht-king, .wht-queen, .wht-bishop, .wht-rook, .wht-pawn").draggable("option","disabled",true);
+        clearInterval(tmr);
+        tmrID = "#timer-black";
+        tmr=setInterval(countdown,1000);
     }else{
         $(".blk-king, .blk-queen, .blk-bishop, .blk-rook, .blk-pawn").draggable("option","disabled",true);
         $(".wht-king, .wht-queen, .wht-bishop, .wht-rook, .wht-pawn").draggable("option","disabled",false);
+        clearInterval(tmr);
+        tmrID = "#timer-white";
+        tmr=setInterval(countdown,1000);
     }
 }
 
@@ -320,11 +361,8 @@ function patternMovementVertical(pattern,id,color){
         if (end) {
             break;
         }
-        for (var x = 0; x < 8; x++) {
-            if ((nextId == wht_pawn_init[x]-8) || (nextId == blk_pawn_init[x]+8)) {
-                end = true;
-                break;
-            }
+        if (nextId <= 8 || nextId >= 57) {
+            end = true;
         }
     }
 }
