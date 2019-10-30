@@ -3,4 +3,4 @@
 Hosted at-> http://missaka.ml/projects/gameofchess/
 
 #Source
-Repository at ->http
+Repository at ->https://github.com/MissakaI/ChessBoard
